@@ -42,3 +42,16 @@ questionList.push(quest3);
 console.log(questionList);
 
 // Might add more questions later
+
+// Creating variables for quesitons functions added later
+let optionsList = [];
+let questNum = 0;
+let valuescore = 0;
+let timeRem = 100;
+let quizRun = false;
+let scoreinitials = "";
+let scoreleaderboard = [];
+let answerClear = false;
+let clearingAnswer = 0;
+let correct = false;
+
