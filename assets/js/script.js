@@ -55,3 +55,31 @@ let answerClear = false;
 let clearingAnswer = 0;
 let correct = false;
 
+// Adding init to load highscores and start button clickable
+// Change 'empty function into real one'
+function init() {
+    startbutton.addEventListener("click", empty function);
+    hiscore.addEventListener("click", empty function);
+}
+
+// Adding function to hide questions before starting quiz
+function questvis() {
+    runtimer();
+    // If quizRun=true then hide content
+    quizRun = true;
+    startbutton.setAttribute("style", "display:none");
+    hiscore.setAttribute("style", "display:none");
+    
+    // Declaring a let variable for questionList in order to create for loop
+    let optionNum = questionList[0].option.length;
+    
+    for (let i = 0; i < optionNum; i++) {
+        let optionb = document.createElement("button");
+        maincontainer.appendChild(optionb);
+        optionsList.push(optionb);
+        // Template Literal String
+        optionb.setAttribute("id", `button${i + 1}`);
+    }
+    
+    // add variable to determine whether to move to next question or end quiz
+}
