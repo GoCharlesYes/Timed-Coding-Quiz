@@ -57,14 +57,28 @@ let correct = false;
 
 // Adding init to load highscores and start button clickable
 // Change 'empty function into real one'
+// 
+// 
+// 
+// 
+// 
+// 
+// 
+// 
 function init() {
-    startbutton.addEventListener("click", empty function);
+    startbutton.addEventListener("click", questvis);
     hiscore.addEventListener("click", empty function);
 }
 
 // Adding function to hide questions before starting quiz
 function questvis() {
-    runtimer();
+    // Undeclared function
+    // 
+    // 
+    // 
+    // 
+    // 
+    runTimer();
     // If quizRun=true then hide content
     quizRun = true;
     startbutton.setAttribute("style", "display:none");
@@ -82,4 +96,49 @@ function questvis() {
     }
     
     // add variable to determine whether to move to next question or end quiz
+    // nextQuest();
+    // Uncomment once function  has been delcared
+    // 
+    //     
+}
+
+// Countdown timer, stops quiz once it reaches 0
+function runTimer() {
+    let quizTimer = setInterval(function() {
+        timeLeft--;
+        timer.textContent = `Time: ${timeLeft} seconds remaining!`;
+
+        if(timeLeft === 0) {
+            clearInterval(quizTimer);
+            if(maintitle.textContent !== "Finish!") {
+                // Below is undeclraed function
+                // 
+                // 
+                // 
+                // 
+                quizEnd();
+            }
+        }
+    })
+}
+
+
+
+function questionNext() {
+    maintitle.textContent = questionList[questNum].quest;
+    for(let i = 0; i < questionList[questNum].option.length; i++) {
+        optionsList[i].textContent = questionList[questNum].option[i];
+        optionsList[i].addEventListener("click", nextQuest);
+    }
+    questNum++;
+}
+
+// Either moves to next question or end quiz
+function nextQuest(event) {
+    writeAns(event);
+    if(questNum < optionsList.length) {
+        questionNext();
+    } else {
+        quizEnd();
+    }
 }
