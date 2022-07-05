@@ -46,7 +46,7 @@ console.log(questionList);
 // Creating variables for quesitons functions added later
 let optionsList = [];
 let questNum = 0;
-let valuescore = 0;
+let valueScore = 0;
 let timeRem = 100;
 let quizRun = false;
 let scoreinitials = "";
@@ -94,12 +94,7 @@ function questvis() {
         // Template Literal String
         optionb.setAttribute("id", `button${i + 1}`);
     }
-    
-    // add variable to determine whether to move to next question or end quiz
-    // nextQuest();
-    // Uncomment once function  has been delcared
-    // 
-    //     
+    nextQuest();
 }
 
 // Countdown timer, stops quiz once it reaches 0
@@ -122,7 +117,46 @@ function runTimer() {
     })
 }
 
+// function checks what question and if the answer from previous question is correct, incorrect answers reduce timer by 10 seconds and changes color
+function writeAns(event) {
+    if(event !== undefined) {
+        if(event.currentTarget.textContent === questionList[questNum - 1].answer) {
+            correct = true;
+            answer.textContent = "Correct Answer!";
+            answer.setAttribute("style", "color: green");
+            valueScore += 10;
+        } else {
+            correct = false;
+            answer.textContent = "Incorrect Answer :(";
+            answer.setAttribute("style", "color: red");
+            if(timeRem > 10) {
+                timeLeft -= 10;
+            } else {
+                timeLeft = 1;
+            }
+            timer.setAttribute("style", "color: red");
+            setTimeout(function(){
+                timer.setAttribute("style", "color: black");
+            },1000);
+        }
+        removeAns();
+    }
+}
 
+// removes content in footer after 5 seconds
+function removeAns () {
+    if(answerClear) {
+        answerClear = false;
+        clearTimeout(clearingAnswer);
+        answerClear();
+    } else {
+        answerClear = true;
+        clearingAnswer = setTimeout(function() {
+            answer.textContent = "";
+            answerClear = false;
+        }, 5000);
+    }
+}
 
 function questionNext() {
     maintitle.textContent = questionList[questNum].quest;
@@ -141,4 +175,16 @@ function nextQuest(event) {
     } else {
         quizEnd();
     }
+}
+
+// creating function to stop quiz and show score
+function quizEnd() {
+    maintitle.textContent = "Finished Quiz!";
+    timeRem = 1;
+    optionClear();
+    removeAns();
+    startinstructions.setAttribute("style", "display: visible");
+    startinstructions.textContent = `Final Score: ${valueScore}`
+    inputFields();
+    // ^^undeclared function will add later
 }
