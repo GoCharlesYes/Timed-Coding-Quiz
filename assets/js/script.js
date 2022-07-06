@@ -67,7 +67,7 @@ let correct = false;
 // 
 function init() {
     startbutton.addEventListener("click", questvis);
-    hiscore.addEventListener("click", empty function);
+    hiscore.addEventListener("click", scoreShow);
 }
 
 // Adding function to hide questions before starting quiz
@@ -207,9 +207,128 @@ function inputScore() {
     submission.textContent = "Submit";
 
     maintitle.setAttribute("style", "align-self: start");
-    startinstructions.("style", "align-self: start; font-size: 125%");
+    startinstructions("style", "align-self: start; font-size: 125%");
 
     typeinput.addEventListener("keydown", terminateRefresh);
     startinstructions.addEventListener("click", addScore);
-    // ^^Undeclared variable create down below
+    // ^^Undeclared variables create down below
 }
+
+// Prevent default form from opening
+function terminateRefresh(event) {
+    if(event.key === "Enter") {
+        event.preventDefault();
+    }
+}
+
+// function to add score and check if initials are in proper format
+function addScore(event) {
+    if(event !== undefined) {
+        event.preventDefault();
+    }
+    let id = document.getElementById("initials");
+    if(id.value.length > 3 || id.value.length === 0) {
+        wrongInput();
+        return;
+    }
+    quizRun = false;
+    document.getElementById("form").remove();
+    scoreSave(id);
+}
+
+// Adds score to local storage and checks if there are already existing ones in local storage
+function scoreSave(id) {
+    if(localStorage.getItem("scoreleaderboard") !== null) {
+        leaderboard = JSON.parse(localStorage.getItem("scoreleaderboard"));
+    }
+    leaderboard.push(`${score} ${id.value}`);
+    localStorage.setItem("scoreleaderboard", JSON.stringify(scoreleaderboard));
+    scoreShow();  
+}
+
+// Checks if initials are typed in correct format, otherwise a message is displayed
+function wrongInput() {
+    answer.textContent = "Initials must contain 3 characters";
+    answer.setAttribute("style", "color: black");
+    clearAnswer();
+    let submit = document.getElementById("submit");
+    submit.addEventListener("click", addScore);
+}
+
+// Prevents other actions while quiz is running
+function scoreShow() {
+    if(!isQuizOngoing) {
+        title.textContent = "Hi-Scores";
+        // Start button is hidden while scores are beign displayed
+        startbutton.setAttribute("style", "display: none");
+        displayScores();
+        endCreate();
+    } else if(title.textContent === "Finished!") {
+        answer.textContent = "Enter Initials First.";
+        answer.setAttribute("style", "color: black");
+        removeAnswer();
+    } else {
+        answer.textContent = "Quiz must be finished before viewing scores";
+        answer.setAttribute("style", "color: black");
+        removeAnswer();
+    }
+}
+
+// Checks for scores in local storage and assorts them into top to low scores
+function displayScores() {
+    startinstructions.textContent = "";
+    startinstructions.setAttribute("style", "white-space: pre-wrap; font-size: 150%");
+    if(localStorage.getItem("scoreleaderboard") !== null) {
+        leaderboard = JSON.parse(localStorage.getItem("scoreleaderboard"));
+    }
+    scoreleaderboard.sort();
+    scoreleaderboard.reverse();
+    let limit = 11;
+    if(limit > scoreleaderboard.length) {
+        limit = scoreleaderboard.length;
+    }
+    for(let i = 0; i < limit; i++) {
+        startinstructions.textContent += scoreleaderboard[i] + '\n';
+    }
+}
+
+// event listeners for buttons
+function endCreate() {
+    if(!document.getElementById("restart")) {
+        let resetMain = document.createElement("button");
+        startinstructions.appendChild(resetMain);
+        resetMain.textContent = "Go Back";
+        resetMain.setAttribute("id", "restart");
+        
+        let clearSecondary = document.createElement("button");
+        startinstructions.appendChild(clearSecondary);
+        clearSecondary.textContent = "Clear Hi-Scores";
+        clearSecondary.setAttribute("id", "clearScores");
+        
+        resetMain.addEventListener("click", restart);
+        clearSecondary.addEventListener("click", clearScores);
+    }
+}
+
+// sets screen back to original, and resets all variables
+function restart() {
+    maintitle.setAttribute("style", "align-self: center");
+    startinstructions.setAttribute("style", "align-self: center; font-size: 110%");
+    document.getElementById("restart").remove();
+    document.getElementById("clearScores").remove();
+    maintitle.textContent = "Coding Quiz Challenge";
+    startinstructions.textContent = "Try to answer the following code-related questions within the time limit. Keep in mind that incorrect answers will penalize your time by reducing it by ten seconds.";
+    startbutton.setAttribute("style", "display: visible");
+    questNum = 0;
+    valueScore = 0;
+    timeRem = 100;
+    init(); 
+}
+
+function clearScores() {
+    localStorage.clear();
+    startinstructions.textContent = "";
+    scoreleaderboard = [];
+}
+
+init();
