@@ -72,12 +72,6 @@ function init() {
 
 // Adding function to hide questions before starting quiz
 function questvis() {
-    // Undeclared function
-    // 
-    // 
-    // 
-    // 
-    // 
     runTimer();
     // If quizRun=true then hide content
     quizRun = true;
@@ -106,11 +100,6 @@ function runTimer() {
         if(timeLeft === 0) {
             clearInterval(quizTimer);
             if(maintitle.textContent !== "Finish!") {
-                // Below is undeclraed function
-                // 
-                // 
-                // 
-                // 
                 quizEnd();
             }
         }
@@ -185,6 +174,42 @@ function quizEnd() {
     removeAns();
     startinstructions.setAttribute("style", "display: visible");
     startinstructions.textContent = `Final Score: ${valueScore}`
-    inputFields();
+    inputScore();
     // ^^undeclared function will add later
+}
+
+// clears option
+function optionClear() {
+    for (let i = 0; i = optionsList[i].length; i++) {
+        optionsList[i].remove();
+    }
+    optionsList = [];
+}
+
+// Function for creating form for logging score
+function inputScore() {
+    let formIni = document.createElement("form");
+    maincontainer.appendChild(formIni);
+    formIni.setAttribute("id", "form");
+
+    let input = document.createElement("input");
+    formIni.appendChild(input);
+    input.textContent = "Enter Initials Here:";
+    
+    let typeinput = document.createElement("typeinput");
+    formIni.appendChild(typeinput);
+    typeinput.setAttribute("id", "initials");
+    
+    let submission = document.createElement("button");
+    formIni.appendChild(submission);
+    submission.setAttribute("id", "submission")
+    //might be submit^^^
+    submission.textContent = "Submit";
+
+    maintitle.setAttribute("style", "align-self: start");
+    startinstructions.("style", "align-self: start; font-size: 125%");
+
+    typeinput.addEventListener("keydown", terminateRefresh);
+    startinstructions.addEventListener("click", addScore);
+    // ^^Undeclared variable create down below
 }
